@@ -47,6 +47,12 @@ Displays a list of avatars
         color: rgba(255,255,255,0.9);
       }
 
+      .placeholder-image {
+        background-repeat: no-repeat;
+        background-size: cover;
+        @apply(--paper-avatar-placeholder-image);
+      }
+
       .badge {
         display: flex;
         justify-content: center;
@@ -113,9 +119,7 @@ Displays a list of avatars
         </div>
       </template>
       <template is="dom-if" if="[[!placeholder]]">
-        <div class="image">
-          <img src="data:image/webp;base64,UklGRrQCAABXRUJQVlA4TKgCAAAvWUAWAGfjoG0kSQp/ZAtqt7zPHQcGbdsIyvPn8ST/VwsIivwfbf7Vpm3ApI3Bdxzvg/jbIHowso1t160GALUgwCYC26htZCIA27bBIGwD9sEImzDYbgA1CGK3bec3qO2ofdhw/bOBFmA32AZGbQNsQQQtVLQQRKiJAN8TKCRa2562jW3FUVSXmZk7LjMzs0Kr7a6h+f5vYGT595h+SRH9nwDnL4g0YZmGNBXSmGGkZmzthJeK6kSO1RAWH2i2b1Se3GyaKy3dp8pGu4kxQWs3gjz/bB1sII0F0uu5/Iul10diwJoMMjxE1JMWuMS45iHrcQRGOzUPXXdSYDwTHipYZNHnAjUSQKyuwoXKOoRjz3livDkJx7zPiEFpgmFtJS4YWxkUOuWL0pJCsZddUXLZhkI286L0JgGznxOVQzjbeVFagkmsi5MIxZ72RHkzEgodKogqDFIoqqosqlLlgCU7eTF6h8Ch/UUxup/CUcZFVoREwwGc6g5EaExBUtbqY3i4ajmwyakbljzVDnCGl244EhlCU5g6KoRR0IgO/Gpz9n3+S/R7aVY7sUgadgM38ymUereBOHHJzKb5m0rB11oreTOPJnNiFG2jfmDqlZwaVIbNnLhFqqRUCp0f2EiTkljKlIY0pVQ6YVMWB5jURn3/88Wt46v0Y6lceHt7vrc2PdpmW5KCYtJoebGVKRd8N5/FNP8QZe7Be1csnS0MM4tCoUbHwl3Jz6d5uFm3UD6YqCIMgJ2YvCy7GS4291hcbzZZxFLWs/RThkfxIdhpJJGyOq8LGR7VfLBks+gYczrDo+zfNiSjQvYLPOLZYo8dDfPQ55HPlNtpFMh8gQNEdCLIWgMO0ltJiCObeRiq5IinyIEWRqgoJotQ/JdJYd0FMG9sYV1wXv9NAA==">
-        </div>
+        <div class="image placeholder-image"></div>
       </template>
     </template>
 

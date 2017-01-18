@@ -12,9 +12,11 @@ Displays a list of avatars
   <template>
     <style>
       :host {
-        display: flex;
         --paper-avatar-list-lag: 400ms;
         --paper-avatar-list-delay: 30ms;
+        --paper-avatar-list-avatar-size: 50px;
+
+        display: flex;
         justify-content: flex-start;
         align-items: center;
         flex-wrap: wrap;
@@ -44,6 +46,8 @@ Displays a list of avatars
       }
 
       paper-avatar {
+        width: var(--paper-avatar-list-avatar-size);
+        height: var(--paper-avatar-list-avatar-size);
         margin-right: -10px;
         margin-bottom: 4px;
         transform: scale(0);
