@@ -6,7 +6,7 @@
 `paper-avatar`
 Displays a list of avatars
 
-@demo demo/index.html 
+@demo demo/index.html
 -->
 
 <dom-module id="paper-avatar">
@@ -104,7 +104,7 @@ Displays a list of avatars
 
     <template is="dom-if" if="[[src]]">
       <div class="image">
-        <img src="[[src]]" alt="[[placeholder]]">
+        <img src="[[src]]" alt$="[[alt]]">
       </div>
     </template>
     <template is="dom-if" if="[[!src]]">
@@ -138,6 +138,11 @@ Displays a list of avatars
         src: {
           type: String,
           value: ''
+        },
+
+        alt: {
+          type: String,
+          reflectToAttribute: true
         },
 
         placeholder: {
