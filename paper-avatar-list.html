@@ -1,0 +1,161 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="./paper-avatar.html">
+
+<!--
+`paper-avatar-list`
+Displays a list of avatars
+
+@demo demo/paper-avatar-list.html 
+-->
+
+<dom-module id="paper-avatar-list">
+  <template>
+    <style>
+      :host {
+        display: flex;
+        --paper-avatar-list-lag: 400ms;
+        --paper-avatar-list-delay: 30ms;
+        justify-content: flex-start;
+        align-items: center;
+        flex-wrap: wrap;
+      }
+
+      :host([hidden]) {
+        display: none !important;
+      }
+
+      [hidden] {
+        display: none !important;
+      }
+
+      .expand-button {
+        width: 40px;
+        height: 40px;
+        background-color: #607d8b;
+        color: white;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 50%;
+        margin-left: 14px;
+        cursor: pointer;
+        transform: scale(0);
+        animation: popup 233ms ease-in-out forwards;
+      }
+
+      paper-avatar {
+        margin-right: -10px;
+        margin-bottom: 4px;
+        transform: scale(0);
+        animation: popup 233ms ease-in-out forwards;
+      }
+
+      @keyframes popup {
+        to {
+          transform: scale(1);
+        }
+      };
+    </style>
+
+    <template is="dom-repeat" items="[[_filterByLimit(items, limit)]]" initial-count="1" target-framerate="32">
+      <paper-avatar
+        style$="animation-delay: [[_getDelay(index, expanded)]]"
+        badge="[[_getValueByName(item, badgeName)]]"
+        placeholder="[[_getValueByName(item, placeholderName)]]"
+        src="[[_getValueByName(item, avatarName)]]">
+      </paper-avatar>
+    </template>
+
+    <template is="dom-if" if="[[expanded]]">
+      <template is="dom-repeat" items="[[_restOfItems]]" initial-count="1" target-framerate="32">
+        <paper-avatar
+          style$="animation-delay: [[_getDelay(index, expanded)]]
+          badge="[[_getValueByName(item, badgeName)]]"
+          placeholder="[[_getValueByName(item, placeholderName)]]"
+          src="[[_getValueByName(item, avatarName)]]">
+        </paper-avatar>
+      </template>
+    </template>
+
+    <template is="dom-if" if="[[_restOfItems.length]]">
+      <span class="expand-button" on-tap="expand" hidden="[[expanded]]" style$="animation-delay: [[_getDelay(limit, expanded, 1)]]">+[[_restOfItems.length]]</span>
+    </template>
+  </template>
+
+  <script>
+    Polymer({
+
+      is: 'paper-avatar-list',
+
+      properties: {
+        items: {
+          type: Array
+        },
+
+        avatarName: {
+          type: String,
+          value: 'image'
+        },
+
+        placeholderName: {
+          type: String,
+          value: 'name'
+        },
+
+        badgeName: {
+          type: String
+        },
+
+        limit: {
+          type: Number,
+          value: 3
+        },
+
+        expanded: {
+          type: Boolean,
+          value: false
+        },
+
+        _restOfItems: {
+          type: Number,
+          computed: '_getRestOfItems(items, limit)'
+        }
+
+      },
+
+      expand: function() {
+        this.expanded = true;
+      },
+
+      collapse: function() {
+        this.expanded = false;
+      },
+
+      _getValueByName: function(item, name) {
+        return item ? item[name] : null;
+      },
+
+      _filterByLimit(items, limit) {
+        return items.slice(0, limit);
+      },
+
+      _getRestOfItems: function(items, limit) {
+        if (!items) {
+          return [];
+        }
+
+        return items.slice(limit);
+      },
+
+      _getDelay: function(index, inmediate, plus) {
+        var lag = inmediate ? 0 : 400;
+        var delay = parseInt(this.getComputedStyleValue('--paper-avatar-list-delay'));
+        var inc = plus ? plus : 0;
+        var time = lag + (delay * (index + inc)) + (inc * 32);
+
+        return time + 'ms'
+      },
+
+    });
+  </script>
+</dom-module>

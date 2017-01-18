@@ -1,0 +1,188 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../paper-styles/color.html">
+<link rel="import" href="../iron-icon/iron-icon.html">
+
+<!--
+`paper-avatar`
+Displays a list of avatars
+
+@demo demo/index.html 
+-->
+
+<dom-module id="paper-avatar">
+  <template>
+    <style>
+      :host {
+        display: inline-block;
+        vertical-align: top;
+        width: 50px;
+        height: 50px;
+        position: relative;
+      }
+
+      :host([hidden]) {
+        display: none !important;
+      }
+
+      .placeholder,
+      .image {
+        background-color: #2d2d2d;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        border-radius: 50%;
+      }
+
+      .image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      .placeholder {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-family: "Helvetica Neue", "Segoe UI", "Roboto", sans-serif;
+        font-size: 1rem;
+        color: rgba(255,255,255,0.9);
+      }
+
+      .badge {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        border-radius: 50%;
+        transform: rotate(-60deg) translate(-50%, 50%);
+        transform-origin: left top;
+        font-size: var(--paper-avatar-badge-icon-size, 12px);
+        width: var(--paper-avatar-badge-width, 20px);
+        height: var(--paper-avatar-badge-height, 20px);
+        background-color: var(--paper-avatar-badge-background, --accent-color);
+        opacity: var(--paper-avatar-badge-opacity, 1.0);
+        color: var(--paper-avatar-badge-text-color, white);
+      }
+
+      .badge iron-icon {
+        --iron-icon-width: 1em;
+        --iron-icon-height: 1em;
+      }
+
+      .badge-container {
+        top: 50%;
+        left: 50%;
+        position: absolute;
+        width: 50%;
+        background: white;
+        height: 0px;
+        transform: rotate(60deg);
+        transform-origin: left;
+      }
+
+      .color-0 { background-color: var(--paper-red-500); }
+      .color-1 { background-color: var(--paper-pink-500); }
+      .color-2 { background-color: var(--paper-purple-500); }
+      .color-3 { background-color: var(--paper-deep-puprple-500); }
+      .color-4 { background-color: var(--paper-indigo-500); }
+      .color-5 { background-color: var(--paper-blue-500); }
+      .color-6 { background-color: var(--paper-light-blue-500); }
+      .color-7 { background-color: var(--paper-cyan-500); }
+      .color-8 { background-color: var(--paper-teal-500); }
+      .color-9 { background-color: var(--paper-green-500); }
+      .color-10 { background-color: var(--paper-light-green-500); }
+      .color-11 { background-color: var(--paper-lime-500); }
+      .color-12 { background-color: var(--paper-yellow-500); }
+      .color-13 { background-color: var(--paper-amber-500); }
+      .color-14 { background-color: var(--paper-orange-500); }
+      .color-15 { background-color: var(--paper-deep-orange-500); }
+      .color-16 { background-color: var(--paper-grey-500); }
+      .color-17 { background-color: var(--paper-blue-grey-500); }
+    </style>
+
+    <template is="dom-if" if="[[src]]">
+      <div class="image">
+        <img src="[[src]]" alt="[[placeholder]]">
+      </div>
+    </template>
+    <template is="dom-if" if="[[!src]]">
+      <template is="dom-if" if="[[placeholder]]">
+        <div class$="placeholder color-[[_getHashCode(placeholder)]]">
+          <span>[[_getInitials(placeholder)]]</span>
+        </div>
+      </template>
+      <template is="dom-if" if="[[!placeholder]]">
+        <div class="image">
+          <img src="data:image/webp;base64,UklGRrQCAABXRUJQVlA4TKgCAAAvWUAWAGfjoG0kSQp/ZAtqt7zPHQcGbdsIyvPn8ST/VwsIivwfbf7Vpm3ApI3Bdxzvg/jbIHowso1t160GALUgwCYC26htZCIA27bBIGwD9sEImzDYbgA1CGK3bec3qO2ofdhw/bOBFmA32AZGbQNsQQQtVLQQRKiJAN8TKCRa2562jW3FUVSXmZk7LjMzs0Kr7a6h+f5vYGT595h+SRH9nwDnL4g0YZmGNBXSmGGkZmzthJeK6kSO1RAWH2i2b1Se3GyaKy3dp8pGu4kxQWs3gjz/bB1sII0F0uu5/Iul10diwJoMMjxE1JMWuMS45iHrcQRGOzUPXXdSYDwTHipYZNHnAjUSQKyuwoXKOoRjz3livDkJx7zPiEFpgmFtJS4YWxkUOuWL0pJCsZddUXLZhkI286L0JgGznxOVQzjbeVFagkmsi5MIxZ72RHkzEgodKogqDFIoqqosqlLlgCU7eTF6h8Ch/UUxup/CUcZFVoREwwGc6g5EaExBUtbqY3i4ajmwyakbljzVDnCGl244EhlCU5g6KoRR0IgO/Gpz9n3+S/R7aVY7sUgadgM38ymUereBOHHJzKb5m0rB11oreTOPJnNiFG2jfmDqlZwaVIbNnLhFqqRUCp0f2EiTkljKlIY0pVQ6YVMWB5jURn3/88Wt46v0Y6lceHt7vrc2PdpmW5KCYtJoebGVKRd8N5/FNP8QZe7Be1csnS0MM4tCoUbHwl3Jz6d5uFm3UD6YqCIMgJ2YvCy7GS4291hcbzZZxFLWs/RThkfxIdhpJJGyOq8LGR7VfLBks+gYczrDo+zfNiSjQvYLPOLZYo8dDfPQ55HPlNtpFMh8gQNEdCLIWgMO0ltJiCObeRiq5IinyIEWRqgoJotQ/JdJYd0FMG9sYV1wXv9NAA==">
+        </div>
+      </template>
+    </template>
+
+    <template is="dom-if" if="[[badgeIcon]]">
+      <div class="badge-container">
+        <div class="badge">
+          <iron-icon icon="[[badgeIcon]]"></iron-icon>
+        </div>
+      </div>
+    </template>
+  </template>
+
+  <script>
+    Polymer({
+
+      is: 'paper-avatar',
+
+      properties: {
+        src: {
+          type: String,
+          value: ''
+        },
+
+        placeholder: {
+          type: String,
+          value: ''
+        },
+
+        badgeIcon: {
+          type: String
+        },
+
+        _numColors: {
+          type: Number,
+          value: 18
+        }
+      },
+
+      _getInitials: function(placeholder) {
+        if (!placeholder) {
+          return;
+        }
+
+        var initials = ('' + placeholder).replace(/[^a-zA-Z- ]/g, '').match(/\b\w/g);
+
+        if (initials) {
+          return initials.join('').substring(0, 2);
+        }
+      },
+
+      _getHashCode: function(str) {
+        if (!str) {
+          return 0;
+        }
+
+        var hash = 0;
+
+        for (var i = 0; i < str.length; i++) {
+          var chr = str.charCodeAt(i);
+          hash = ((hash << 5) - hash) + chr;
+          hash |= 0; // Convert to 32bit integer
+        }
+
+        return Math.abs(hash) % this._numColors; ;
+      },
+
+    });
+  </script>
+</dom-module>
