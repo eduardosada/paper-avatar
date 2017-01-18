@@ -5,7 +5,7 @@
 `paper-avatar-list`
 Displays a list of avatars
 
-@demo demo/paper-avatar-list.html 
+@demo demo/paper-avatar-list.html
 -->
 
 <dom-module id="paper-avatar-list">
@@ -78,7 +78,7 @@ Displays a list of avatars
     </template>
 
     <template is="dom-if" if="[[_restOfItems.length]]">
-      <span class="expand-button" on-tap="expand" hidden="[[expanded]]" style$="animation-delay: [[_getDelay(limit, expanded, 1)]]">+[[_restOfItems.length]]</span>
+      <span class="expand-button" on-tap="_onExpandClicked" hidden="[[expanded]]" style$="animation-delay: [[_getDelay(limit, expanded, 1)]]">+[[_restOfItems.length]]</span>
     </template>
   </template>
 
@@ -129,6 +129,11 @@ Displays a list of avatars
 
       collapse: function() {
         this.expanded = false;
+      },
+
+      _onExpandClicked: function(e) {
+        e.preventDefault();
+        this.expand();
       },
 
       _getValueByName: function(item, name) {
